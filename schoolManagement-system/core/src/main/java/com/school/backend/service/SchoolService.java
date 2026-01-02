@@ -163,6 +163,10 @@ public class SchoolService {
                 .countAbsences(personId, personType);
     }
 
+    public int justifyAbsence(int personId) {
+        checkReadPermission("ATTENDANCE");
+        return jdbi.onDemand(AbsenceDao.class).justifyAbsence(personId);
+    }
     /* ================= SECURITY ================= */
 
     private void checkWritePermission() {
