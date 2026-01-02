@@ -1,5 +1,6 @@
 package com.school.ui.frontend;
 
+import com.school.backend.model.User;
 import com.school.backend.service.SchoolService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -46,21 +47,18 @@ public class LoginView {
             else {
                 service.login(user, pass);
                 if(service.getCurrentUser() != null) {
-                    switch (service.getCurrentUser().getRole()) {
-                        case "ADMIN":
-                            new AdminView(stage).show();
-                            break;
-                        case "MANAGER":
-                            new MagasinierView(stage).show();
-                            break;
-                        case "ECONOME":
-                            new EconomyView(stage).show();
-                            break;
-                        default:
-                            break;
+                    User currentUser = service.getCurrentUser();
+                    switch (currentUser.getRole()) {
+                        case "ADMIN" -> new AdminView(stage, service).show();
+                        case "MANAGER" -> new MagasinierView(stage, service).show();
+                        case "ECONOME" -> new EconomyView(stage, service).show();
                     }
+                    }
+                else  {
+                    message.setText("Invalid username or password");
                 }
-            }
+                }
+
 
 
         });

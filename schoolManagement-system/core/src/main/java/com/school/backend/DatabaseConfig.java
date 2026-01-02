@@ -51,6 +51,8 @@ public class DatabaseConfig {
                 CREATE TABLE IF NOT EXISTS users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     email TEXT UNIQUE NOT NULL,
+                    first_name TEXT NOT NULL,
+                    last_name TEXT NOT NULL,
                     password TEXT NOT NULL,
                     role TEXT NOT NULL CHECK (role IN ('ADMIN','MANAGER','ECONOME')),
                     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -211,8 +213,8 @@ public class DatabaseConfig {
 
             if (count == 0) {
                 handle.execute("""
-                    INSERT INTO users (email, password, role)
-                    VALUES ('admin@school.com', 'admin123', 'ADMIN')
+                  INSERT INTO users (email, first_name, last_name, password, role)
+                          VALUES ('admin@school.com', 'Admin', 'System', 'admin123', 'ADMIN');
                 """);
             }
         });
