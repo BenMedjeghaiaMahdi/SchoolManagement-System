@@ -1,5 +1,7 @@
 package com.school.ui.frontend;
 
+import com.school.backend.model.User;
+import com.school.backend.service.SchoolService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,9 +12,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class LoginView {
+    SchoolService service = SchoolService.getInstance();
 
     private Stage stage;
-
     public LoginView(Stage stage) {
         this.stage = stage;
     }
@@ -39,20 +41,29 @@ public class LoginView {
         loginBtn.setOnAction(e -> {
             String user = usernameField.getText();
             String pass = passwordField.getText();
-
-
-            if (user.equals("admin") && pass.equals("admin123")) {
-                new AdminView(stage).show();
-            }
-            else if (user.equals("store") && pass.equals("store123")) {
-                new MagasinierView(stage).show();
-            }
-            else if (user.equals("emp") && pass.equals("emp123")) {
-                new EmployeView(stage).show();
+            if (user.isEmpty() || pass.isEmpty()) {
+                message.setText("Please enter username and password");
             }
             else {
-                message.setText("Username or Password incorrect!");
+                service.login(user, pass);
+                if(service.getCurrentUser() != null) {
+                    switch (service.getCurrentUser().getRole()) {
+                        case "ADMIN":
+                            new AdminView(stage).show();
+                            break;
+                        case "MANAGER":
+                            new MagasinierView(stage).show();
+                            break;
+                        case "ECONOME":
+                            new EconomeView(stage).show();
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
+
+
         });
 
         VBox form = new VBox(15, title, usernameField, passwordField, loginBtn, message);
