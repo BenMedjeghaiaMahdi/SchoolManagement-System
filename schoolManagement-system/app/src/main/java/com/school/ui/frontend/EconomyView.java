@@ -5,11 +5,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class EconomeView {
+public class EconomyView {
 
     private Stage stage;
 
-    public EconomeView(Stage stage) {
+    public EconomyView(Stage stage) {
         this.stage = stage;
     }
 

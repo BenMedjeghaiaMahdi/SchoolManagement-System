@@ -1,6 +1,5 @@
 package com.school.ui.frontend;
 
-import com.school.backend.model.User;
 import com.school.backend.service.SchoolService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -55,7 +54,7 @@ public class LoginView {
                             new MagasinierView(stage).show();
                             break;
                         case "ECONOME":
-                            new EconomeView(stage).show();
+                            new EconomyView(stage).show();
                             break;
                         default:
                             break;
