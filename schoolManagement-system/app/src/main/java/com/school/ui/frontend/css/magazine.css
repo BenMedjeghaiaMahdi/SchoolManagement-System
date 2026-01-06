@@ -1,0 +1,145 @@
+/* =========================================================
+   ROOT
+   ========================================================= */
+.root {
+    -fx-background-color: #E8E8E8;           /* Light gray background */
+    -fx-font-family: "Segoe UI", "Dancing Script";
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+.header {
+    -fx-background-color: #5c3425;           /* Dark brown header */
+    -fx-background-radius: 15;
+    -fx-padding: 10 20;
+    -fx-pref-height: 50px;
+}
+
+/* Notification / Icon buttons */
+.icon-btn {
+    -fx-background-color: transparent;
+    -fx-padding: 6;
+}
+
+.icon-btn:hover {
+    -fx-background-color: rgba(255,255,255,0.2);
+    -fx-background-radius: 50%;
+}
+
+/* Date & time (center of header) */
+.date-time {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* User name */
+.user-name {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* =========================================================
+   PAGE TITLE
+   ========================================================= */
+.page-title {
+    -fx-font-family: "Dancing Script";
+    -fx-font-size: 52px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #523E35;    /* Medium brown title */
+    -fx-padding: 10 0 20 0;
+}
+
+/* =========================================================
+   SEARCH & FILTER
+   ========================================================= */
+.search-field {
+    -fx-pref-width: 220px;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #A79A93;
+}
+
+.search-field:focused {
+    -fx-border-color: #523E35;
+}
+
+.filter-menu {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #A79A93;
+}
+
+/* =========================================================
+   MAIN ACTION BUTTONS
+   ========================================================= */
+.reserve-btn {
+    -fx-background-color: #523E35;   /* Medium brown */
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+}
+
+.reserve-btn:hover {
+    -fx-background-color: #3B2720;
+}
+
+.delete-btn {
+    -fx-background-color: #A79A93;   /* Light brown */
+    -fx-text-fill: #3B2720;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+}
+
+.delete-btn:hover {
+    -fx-background-color: #523E35;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+.magazine-table {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #A79A93;
+    -fx-padding: 5;
+}
+
+.magazine-table .column-header {
+    -fx-background-color: #E8E8E8;   /* Light gray header */
+    -fx-font-weight: bold;
+    -fx-text-fill: #3B2720;
+}
+
+.magazine-table .table-row-cell:selected {
+    -fx-background-color: #A79A93;   /* Light brown highlight */
+}
+
+/* =========================================================
+   SIDE ACTIONS (LEFT OF TABLE)
+   ========================================================= */
+.side-actions {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 12;
+    -fx-background-radius: 12;
+    -fx-border-color: #A79A93;
+    -fx-border-radius: 12;
+}
+
+/* Icon-only buttons */
+.side-actions .button {
+    -fx-background-color: #E8E8E8;
+    -fx-background-radius: 50%;
+    -fx-pref-width: 44px;
+    -fx-pref-height: 44px;
+}
+
+.side-actions .button:hover {
+    -fx-background-color: #A79A93;
+}

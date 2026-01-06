@@ -1,0 +1,93 @@
+/* =========================================================
+   ROOT
+   ========================================================= */
+.add-dialog-root {
+    -fx-background-color: #E8E8E8;
+    -fx-font-family: "Segoe UI", "Dancing Script";
+}
+
+/* =========================================================
+   TOP SECTION
+   ========================================================= */
+.add-dialog-top {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #A79A93;
+    -fx-padding: 12;
+}
+
+/* =========================================================
+   IMAGE BOX
+   ========================================================= */
+.image-box {
+    -fx-background-color: #F7F7F7;
+    -fx-border-color: #A79A93;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.image-hint {
+    -fx-text-fill: #523E35;
+    -fx-font-weight: bold;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+.form-label {
+    -fx-text-fill: #3B2720;
+    -fx-font-weight: bold;
+}
+
+.form-field {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #A79A93;
+}
+
+.form-field:focused {
+    -fx-border-color: #523E35;
+}
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+.add-dialog-table {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #A79A93;
+}
+
+.add-dialog-table .column-header {
+    -fx-background-color: #E8E8E8;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3B2720;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+.dialog-btn-primary {
+    -fx-background-color: #523E35;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+}
+
+.dialog-btn-primary:hover {
+    -fx-background-color: #3B2720;
+}
+
+.dialog-btn-secondary {
+    -fx-background-color: #A79A93;
+    -fx-text-fill: #3B2720;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+}
+
+.dialog-btn-secondary:hover {
+    -fx-background-color: #523E35;
+    -fx-text-fill: #FFFFFF;
+}

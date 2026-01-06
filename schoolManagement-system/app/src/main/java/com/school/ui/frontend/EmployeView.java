@@ -5,16 +5,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class AdminView {
+public class EmployeView {
 
     private Stage stage;
 
-    public AdminView(Stage stage) {
+    public EmployeView(Stage stage) {
         this.stage = stage;
     }
 
     public void show() {
-        Label label = new Label("Welcome Admin Test page");
+        Label label = new Label("Welcome Employé Test  Page");
         label.setStyle("-fx-font-size:24px;");
 
         StackPane root = new StackPane(label);
