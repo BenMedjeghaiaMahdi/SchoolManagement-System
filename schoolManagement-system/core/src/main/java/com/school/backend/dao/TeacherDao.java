@@ -56,4 +56,6 @@ public interface TeacherDao {
        Unlink a teacher from a subject */
     @SqlUpdate("DELETE FROM teacher_subjects WHERE teacher_id = :teacherId AND subject_id = :subjectId")
     void removeSubject(@Bind("teacherId") int teacherId, @Bind("subjectId") int subjectId);
+    @SqlUpdate("UPDATE teachers SET photo_path = :path WHERE id = :id")
+    void updatePhotoPath(@Bind("id") int id, @Bind("path") String path);
 }

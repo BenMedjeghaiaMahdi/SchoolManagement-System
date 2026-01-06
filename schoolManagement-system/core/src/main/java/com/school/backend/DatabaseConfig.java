@@ -21,6 +21,9 @@ public class DatabaseConfig {
     private static void init() {
         try {
             File dbDir = new File("data");
+            if(dbDir.exists()) {
+                dbDir.delete();
+            }
             if (!dbDir.exists()) {
                 dbDir.mkdirs();
             }
@@ -54,7 +57,8 @@ public class DatabaseConfig {
                     first_name TEXT NOT NULL,
                     last_name TEXT NOT NULL,
                     password TEXT NOT NULL,
-                    role TEXT NOT NULL CHECK (role IN ('ADMIN','MANAGER','ECONOME')),
+                    role TEXT NOT NULL CHECK (role IN ('ADMIN','MAGAZINER','EMPLOYEE')),
+                    photo_path TEXT,
                     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                 )
             """);
@@ -141,7 +145,11 @@ public class DatabaseConfig {
                 CREATE TABLE IF NOT EXISTS materials (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT UNIQUE NOT NULL,
-                    quantity INTEGER NOT NULL DEFAULT 0 CHECK (quantity >= 0)
+                    model TEXT,
+                    status TEXT,
+                    quantity INTEGER NOT NULL DEFAULT 0 CHECK (quantity >= 0),
+                    photo_path TEXT,
+                    category TEXT
                 )
             """);
 
@@ -214,8 +222,13 @@ public class DatabaseConfig {
             if (count == 0) {
                 handle.execute("""
                   INSERT INTO users (email, first_name, last_name, password, role)
-                          VALUES ('admin@school.com', 'Admin', 'System', 'admin123', 'ADMIN');
+                          VALUES ('admin@school.com', 'Admin', 'System', 'admin123', 'ADMIN');       
                 """);
+                handle.execute("""
+                  INSERT INTO users (email, first_name, last_name, password, role)
+                              VALUES ('sameone@school.com', 'magazine', 'System', 'magazine', 'MAGAZINER');
+                        """);
+
             }
         });
     }

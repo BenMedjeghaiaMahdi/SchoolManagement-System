@@ -1,5 +1,8 @@
-package com.school.ui.frontend;
+package com.school.ui.frontend.magaziner;
 
+import com.school.backend.model.Material;
+import com.school.backend.model.MaterialLog;
+import com.school.backend.service.SchoolService;
 import javafx.stage.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
@@ -11,12 +14,15 @@ import javafx.collections.*;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.util.*;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class ViewElementDialog {
 
+    private static final Logger LOGGER = Logger.getLogger(ViewElementDialog.class.getName());
     private final Stage stage;
 
-    // Table data (loaded from SQLite later)
+    // Table data (loaded from SQLite)
     private final ObservableList<Map<String, String>> historyData =
             FXCollections.observableArrayList();
 
@@ -50,8 +56,6 @@ public class ViewElementDialog {
         imageBox.setPrefWidth(220);
         imageBox.getStyleClass().add("image-box");
 
-        // imageBox is NOT clickable (read-only)
-
         // ================= FORM =================
         GridPane form = new GridPane();
         form.setHgap(10);
@@ -60,21 +64,24 @@ public class ViewElementDialog {
         TextField nameField = createField();
         TextField modelField = createField();
         TextField categoryField = createField();
+        TextField quantityField = createField();
 
         ComboBox<String> stateBox = new ComboBox<>();
         stateBox.getItems().addAll("New", "Good", "Used", "Damaged");
         stateBox.getStyleClass().add("form-field");
 
-        // 🔒 READ ONLY
+        // 🔒 READ ONLY - disable all fields
         nameField.setDisable(true);
         modelField.setDisable(true);
         categoryField.setDisable(true);
+        quantityField.setDisable(true);
         stateBox.setDisable(true);
 
         form.addRow(0, label("Name:"), nameField);
         form.addRow(1, label("Model:"), modelField);
         form.addRow(2, label("Category:"), categoryField);
-        form.addRow(3, label("State:"), stateBox);
+        form.addRow(3, label("Quantity:"), quantityField);
+        form.addRow(4, label("State:"), stateBox);
 
         ColumnConstraints c1 = new ColumnConstraints();
         c1.setPercentWidth(30);
@@ -98,9 +105,11 @@ public class ViewElementDialog {
 
         table.getColumns().addAll(
                 column("ID", "id", 40),
-                column("Name", "name", 120),
-                column("Reserve Time", "reserveTime", 170),
-                column("End Time", "endTime", 170)
+                column("Action", "action", 80),
+                column("Change", "change", 60),
+                column("Before", "before", 70),
+                column("After", "after", 70),
+                column("Date", "date", 150)
         );
 
         // ================= BUTTON =================
@@ -127,6 +136,7 @@ public class ViewElementDialog {
                 nameField,
                 modelField,
                 categoryField,
+                quantityField,
                 stateBox,
                 imageView,
                 imageHint
@@ -137,87 +147,101 @@ public class ViewElementDialog {
         return root;
     }
 
-    // ================= DATABASE (COMMENTED) =================
+    // ================= DATABASE OPERATIONS =================
+
     private void loadElementFromDatabase(
             int elementId,
             TextField name,
             TextField model,
             TextField category,
+            TextField quantity,
             ComboBox<String> state,
             ImageView imageView,
             Label imageHint
     ) {
+        try {
+            LOGGER.fine("Loading material ID: " + elementId);
 
-        /*
-        // SQLite connection
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:school.db");
+            Material material = SchoolService.getInstance().getMaterial(elementId);
 
-        PreparedStatement ps = conn.prepareStatement(
-            "SELECT name, model, category, state, image_path FROM elements WHERE id = ?"
-        );
-        ps.setInt(1, elementId);
+            if (material != null) {
+                name.setText(material.getName());
+                model.setText(material.getModel());
+                category.setText(material.getCategory());
+                quantity.setText(String.valueOf(material.getQuantity()));
+                state.setValue(material.getStatus());
 
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            name.setText(rs.getString("name"));
-            model.setText(rs.getString("model"));
-            category.setText(rs.getString("category"));
-            state.setValue(rs.getString("state"));
+                String photoPath = material.getPhotoPath();
+                LOGGER.info("Photo path from DB: " + photoPath);
 
-            String imagePath = rs.getString("image_path");
-            if (imagePath != null) {
-                imageView.setImage(new Image("file:" + imagePath));
-                imageHint.setVisible(false);
+                if (photoPath != null && !photoPath.isEmpty()) {
+                    try {
+                        // Convert to absolute path
+                        java.nio.file.Path absPath = java.nio.file.Paths.get(photoPath).toAbsolutePath();
+                        LOGGER.info("Absolute path: " + absPath);
+
+                        if (!java.nio.file.Files.exists(absPath)) {
+                            LOGGER.warning("File does not exist: " + absPath);
+                            imageHint.setText("Image file not found");
+                        } else {
+                            String fileUri = absPath.toUri().toString();
+                            LOGGER.info("Loading image from: " + fileUri);
+
+                            Image img = new Image(fileUri);
+
+                            if (img.isError()) {
+                                LOGGER.warning("Image loading error: " + img.getException());
+                                imageHint.setText("Image failed to load");
+                            } else if (img.getWidth() > 0) {
+                                imageView.setImage(img);
+                                imageHint.setVisible(false);
+                                LOGGER.info("Image loaded successfully");
+                            } else {
+                                imageHint.setText("Invalid image format");
+                            }
+                        }
+                    } catch (Exception e) {
+                        LOGGER.log(Level.WARNING, "Failed to load image from path: " + photoPath, e);
+                        imageHint.setText("Error loading image");
+                    }
+                } else {
+                    imageHint.setText("No image available");
+                }
             }
+        } catch (SecurityException se) {
+            showError("Permission Denied", se.getMessage());
+            stage.close();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Failed to load material", e);
+            showError("Error", "Failed to load material: " + e.getMessage());
+            stage.close();
         }
-
-        rs.close();
-        ps.close();
-        conn.close();
-        */
-
-        // ---- TEMP MOCK DATA ----
-        name.setText("Laptop");
-        model.setText("Dell 5420");
-        category.setText("Electronics");
-        state.setValue("Good");
     }
 
     private void loadHistoryFromDatabase(int elementId) {
+        try {
+            LOGGER.fine("Loading history for material ID: " + elementId);
 
-        /*
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:school.db");
+            List<MaterialLog> logs = SchoolService.getInstance()
+                    .getMaterialHistory(elementId);
 
-        PreparedStatement ps = conn.prepareStatement(
-            "SELECT id, name, reserve_time, end_time FROM reservations WHERE element_id = ?"
-        );
-        ps.setInt(1, elementId);
-
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Map<String, String> row = new HashMap<>();
-            row.put("id", rs.getString("id"));
-            row.put("name", rs.getString("name"));
-            row.put("reserveTime", rs.getString("reserve_time"));
-            row.put("endTime", rs.getString("end_time"));
-            historyData.add(row);
+            for (MaterialLog log : logs) {
+                Map<String, String> row = new HashMap<>();
+                row.put("id", String.valueOf(log.getId()));
+                row.put("action", log.getAction());
+                row.put("change", String.valueOf(log.getQuantityChange()));
+                row.put("before", String.valueOf(log.getQuantityBefore()));
+                row.put("after", String.valueOf(log.getQuantityAfter()));
+                row.put("date", log.getLogDate() != null ? log.getLogDate().toString() : "N/A");
+                historyData.add(row);
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "Failed to load history", e);
         }
-
-        rs.close();
-        ps.close();
-        conn.close();
-        */
-
-        // ---- TEMP MOCK DATA ----
-        Map<String, String> r = new HashMap<>();
-        r.put("id", "1");
-        r.put("name", "Laptop");
-        r.put("reserveTime", "2025-01-01 10:00");
-        r.put("endTime", "2025-01-05 12:00");
-        historyData.add(r);
     }
 
     // ================= HELPERS =================
+
     private Label label(String text) {
         Label l = new Label(text);
         l.getStyleClass().add("form-label");
@@ -239,6 +263,13 @@ public class ViewElementDialog {
         col.setCellValueFactory(c ->
                 new SimpleStringProperty(c.getValue().get(key)));
         return col;
+    }
+
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     public void showAndWait() {

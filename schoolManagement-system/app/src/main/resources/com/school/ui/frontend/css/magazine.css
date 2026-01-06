@@ -116,9 +116,8 @@
     -fx-font-weight: bold;
     -fx-text-fill: #3B2720;
 }
-
 .magazine-table .table-row-cell:selected {
-    -fx-background-color: #A79A93;   /* Light brown highlight */
+    -fx-background-color: #A79A93;/* Light brown highlight */
 }
 
 /* =========================================================

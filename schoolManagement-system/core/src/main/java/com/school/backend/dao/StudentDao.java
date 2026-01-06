@@ -27,4 +27,6 @@ public interface StudentDao {
 
     @SqlUpdate("INSERT INTO student_grades (student_id, year_level, average_score) VALUES (:studentId, :year, :score)")
     void addGrade(@Bind("studentId") int studentId, @Bind("year") int year, @Bind("score") double score);
+    @SqlUpdate("UPDATE students SET photo_path = :path WHERE id = :id")
+    void updatePhotoPath(@Bind("id") int id, @Bind("path") String path);
 }

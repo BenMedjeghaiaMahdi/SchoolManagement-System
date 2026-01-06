@@ -38,7 +38,7 @@ public interface MaterialLogDao {
         WHERE material_id = :materialId
         ORDER BY log_date DESC
     """)
-    List<MaterialLog> findByMaterial(@Bind int materialId);
+    List<MaterialLog> findByMaterial(@Bind("materialId") int materialId);
 
     @SqlQuery("""
         SELECT *
@@ -53,5 +53,5 @@ public interface MaterialLogDao {
         WHERE user_id = :userId
         ORDER BY log_date DESC
     """)
-    List<MaterialLog> findByUser(@Bind int userId);
+    List<MaterialLog> findByUser(@Bind("userId") int userId);
 }

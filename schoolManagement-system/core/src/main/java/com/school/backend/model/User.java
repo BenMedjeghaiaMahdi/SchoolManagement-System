@@ -6,6 +6,7 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+    private String photo_path;
     private String grade;
     private String phone;
     private String role;
@@ -26,4 +27,6 @@ public class User {
     public void setPhone(String phone) { this.phone = phone; }
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+    public String getPhotoPath() { return photo_path; }
+    public void setPhotoPath(String photo_path) { this.photo_path = photo_path; }
 }
